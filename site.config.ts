@@ -15,25 +15,25 @@ const DATAPEEK_SITES = [
 
 export const siteConfig: SiteConfig = {
   // ── Basic Info ──────────────────────────────────────────
-  name: 'UsafeUcity',
+  name: 'SafeCityPeek',
   domain: 'safecitypeek.com',
-  description: 'Free data tool for exploring ...',
+  description: 'Compare crime rates, safety scores, and incident data for 400+ US cities. Violent crime, property crime, and per capita rates powered by FBI UCR data.',
 
   // ── Theme ───────────────────────────────────────────────
-  colors: { primary: 'blue', accent: 'teal' },
+  colors: { primary: 'slate', accent: 'amber' },
   lang: 'en',
   locale: 'en-US',
 
   // ── Data Entity ─────────────────────────────────────────
   entity: {
-    slug: 'city',             // URL pattern: /item/[slug]
-    label: 'citys',           // Plural label
-    labelSingular: 'city',    // Singular label
-    dbPath: './data/main.db', // SQLite database path
-    tableName: 'items',       // Main table name
-    slugColumn: 'slug',       // Slug column name
-    nameColumn: 'name',       // Display name column
-    categoryColumn: 'category', // Category column (null if none)
+    slug: 'city',
+    label: 'Cities',
+    labelSingular: 'City',
+    dbPath: './data/main.db',
+    tableName: 'cities',
+    slugColumn: 'slug',
+    nameColumn: 'name',
+    categoryColumn: 'state',
   },
 
   // ── Monetization ────────────────────────────────────────
@@ -45,8 +45,8 @@ export const siteConfig: SiteConfig = {
 
   // ── Data Source ─────────────────────────────────────────
   dataSource: {
-    name: 'US Census Bureau',
-    url: 'https://www.census.gov',
-    year: 2024,
+    name: 'FBI Uniform Crime Reporting (UCR) Program',
+    url: 'https://cde.ucr.cjis.gov/',
+    year: 2023,
   },
 };
