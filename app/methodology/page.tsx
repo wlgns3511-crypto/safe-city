@@ -23,6 +23,11 @@ export default function MethodologyPage() {
 
       <h2 className="text-xl font-semibold mt-8 mb-3">Contact</h2>
       <p>Found an error? Visit our <a href="/contact" className={`text-${c.colors.primary}-600 hover:underline`}>Contact page</a>.</p>
+    
+      <h2>Official Data Sources</h2>
+      <ul>
+        <li><a href="https://cde.ucr.cjis.gov/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">FBI Crime Data Explorer</a></li>
+      </ul>
     </article>
   );
 }

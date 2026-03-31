@@ -174,6 +174,12 @@ export default async function CityPage({ params }: Props) {
         insight={`With a safety score of ${score}/100, ${name} ${score >= 50 ? 'is safer than the average US city' : 'has higher crime rates than the national average'}. ${violent > 400 ? 'Violent crime is a notable concern — ' : ''}Property crime accounts for ${((property / total) * 100).toFixed(0)}% of all reported crimes.`}
       />
 
+      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 my-6 text-sm">
+        <p className="text-slate-600">
+          <strong>Related:</strong> Planning a move? Check <a href="https://costbycity.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">cost of living</a> and <a href="https://guidebycity.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">city guides</a> for this area.
+        </p>
+      </div>
+
       {/* Same State */}
       {related.length > 0 && (
         <section className="mt-8">
