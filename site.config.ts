@@ -37,7 +37,7 @@ export const siteConfig: SiteConfig = {
   },
 
   // ── Monetization ────────────────────────────────────────
-  gaId: 'G-XXXXXXXXXX',
+  gaId: 'G-569DEDYVP8',
   adsenseId: 'ca-pub-5724806562146685',
 
   // ── Network ─────────────────────────────────────────────
