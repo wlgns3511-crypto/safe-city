@@ -12,14 +12,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const categories = getCategories();
   const now = new Date();
 
-  // Get state list for state-specific rankings
   const db = new Database(path.join(process.cwd(), c.entity.dbPath), { readonly: true });
   const states = db.prepare('SELECT DISTINCT state FROM cities ORDER BY state').all() as { state: string }[];
   db.close();
 
   const entries: MetadataRoute.Sitemap = [];
 
-  // Static pages
+  // Static pages (10)
   const staticPages = ['/', '/compare/', '/search/', '/blog/', '/about/', '/methodology/', '/privacy/', '/terms/', '/contact/', '/disclaimer/'];
   for (const page of staticPages) {
     entries.push({ url: `${BASE}${page}`, lastModified: now, priority: page === '/' ? 1.0 : 0.5 });
@@ -30,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({ url: `${BASE}/city/${s.slug}/`, lastModified: now, priority: 0.8 });
   }
 
-  // Category (state) search pages
+  // Category (state) search pages (51)
   for (const cat of categories) {
     entries.push({ url: `${BASE}/search?q=${encodeURIComponent(cat.category)}`, lastModified: now, priority: 0.6 });
   }
@@ -45,18 +44,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entries.push({ url: `${BASE}/rankings/${r}/`, lastModified: now, priority: 0.7 });
   }
 
-  // State-specific rankings (51 states × 2 = 102)
+  // State-specific rankings (51 × 2 = 102)
   for (const { state } of states) {
     const stateSlug = state.toLowerCase().replace(/\s+/g, '-');
     entries.push({ url: `${BASE}/rankings/safest-cities-in-${stateSlug}/`, lastModified: now, priority: 0.6 });
     entries.push({ url: `${BASE}/rankings/most-dangerous-in-${stateSlug}/`, lastModified: now, priority: 0.6 });
   }
 
-  // ALL city comparisons — C(361, 2) = 64,980 pairs
+  // Top compare pairs only — 500 pairs (rest discovered via internal links + ISR)
   const sortedSlugs = slugs.map(s => s.slug).sort();
-  for (let i = 0; i < sortedSlugs.length; i++) {
-    for (let j = i + 1; j < sortedSlugs.length; j++) {
+  let compareCount = 0;
+  for (let i = 0; i < sortedSlugs.length && compareCount < 500; i++) {
+    for (let j = i + 1; j < sortedSlugs.length && compareCount < 500; j++) {
       entries.push({ url: `${BASE}/compare/${sortedSlugs[i]}-vs-${sortedSlugs[j]}/`, lastModified: now, priority: 0.5 });
+      compareCount++;
     }
   }
 
