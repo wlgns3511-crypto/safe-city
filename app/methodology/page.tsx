@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/site.config';
 
 const c = siteConfig;
-export const metadata: Metadata = { title: 'Methodology', description: `How ${c.name} collects and processes data.` };
+export const metadata: Metadata = { title: 'Methodology', description: `How ${c.name} collects and processes data.`, alternates: { canonical: '/methodology/' } };
 
 export default function MethodologyPage() {
   return (

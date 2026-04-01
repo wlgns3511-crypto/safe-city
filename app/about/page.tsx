@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/site.config';
 
 const c = siteConfig;
-export const metadata: Metadata = { title: `About ${c.name}`, description: `Learn about ${c.name} and our data sources.` };
+export const metadata: Metadata = { title: `About ${c.name}`, description: `Learn about ${c.name} and our data sources.`, alternates: { canonical: '/about/' } };
 
 export default function AboutPage() {
   return (

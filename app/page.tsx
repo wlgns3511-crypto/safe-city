@@ -1,8 +1,10 @@
 import { siteConfig } from '@/site.config';
 import { getTopItems, getCategories, getCount } from '@/lib/db';
+import type { Metadata } from "next";
 
 const c = siteConfig;
 
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 export default function HomePage() {
   const items = getTopItems(50);
   const categories = getCategories();

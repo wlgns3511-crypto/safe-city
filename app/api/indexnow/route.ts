@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { siteConfig } from '@/site.config';
 
-const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'your-indexnow-key';
+const INDEXNOW_KEY = '69ff065d39ef4a309811c141774a139b';
 
 export async function POST(request: NextRequest) {
   try {
