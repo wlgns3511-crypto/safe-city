@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 
 const c = siteConfig;
 
-export const metadata: Metadata = { alternates: { canonical: '/' } };
+export const metadata: Metadata = { alternates: { canonical: '/' },
+  openGraph: { url: "/" },
+};
 export default function HomePage() {
   const items = getTopItems(50);
   const categories = getCategories();
