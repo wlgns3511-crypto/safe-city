@@ -8,12 +8,12 @@ const c = siteConfig;
 const SITE_URL = `https://${c.domain}`;
 
 export const metadata: Metadata = {
-  title: { default: `${c.name} - ${c.description}`, template: `%s | ${c.name}` },
+  title: { default: `${c.name} — US City Crime & Safety Data`, template: `%s | ${c.name}` },
   description: c.description,
   metadataBase: new URL(SITE_URL),
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   alternates: { canonical: '/' },
-  openGraph: { type: 'website', siteName: c.name, locale: c.locale.replace('-', '_') },
+  openGraph: { type: 'website', url: SITE_URL, siteName: c.name, locale: c.locale.replace('-', '_') },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
