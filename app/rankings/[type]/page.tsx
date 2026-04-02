@@ -68,7 +68,7 @@ function getAllRankings(): Record<string, Ranking> {
 const ALL_RANKINGS = getAllRankings();
 
 interface Props { params: Promise<{ type: string }> }
-export const dynamicParams = true;
+export const dynamicParams = false;
 export const revalidate = false;
 
 export function generateStaticParams() {
