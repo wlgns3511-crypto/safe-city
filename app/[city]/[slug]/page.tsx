@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/site.config';
-import { getBySlug, getRelated, getAllSlugs, getSimilarItems, getTopItems } from '@/lib/db';
+import { getBySlug, getRelated, getAllSlugs, getSimilarItems, getTopItems, getCityRankInState, getCityNationalPercentile, getStateCrimeAvg } from '@/lib/db';
 import { breadcrumbSchema, faqSchema } from '@/lib/schema';
 import { AdSlot } from '@/components/AdSlot';
 import { AuthorBox } from '@/components/AuthorBox';
 import { FreshnessTag } from '@/components/FreshnessTag';
 import { InsightBox } from '@/components/InsightBox';
+import { InsightCards } from '@/components/InsightCards';
 import { CrossSiteLinks } from '@/components/CrossSiteLinks';
 import { FAQ } from '@/components/FAQ';
 import { Breadcrumb } from '@/components/Breadcrumb';
@@ -74,6 +75,10 @@ export default async function CityPage({ params }: Props) {
   const pop = city.population as number;
   const sc = scoreColor(score);
 
+  const stateRank = getCityRankInState(state, score);
+  const nationalPercentile = getCityNationalPercentile(score);
+  const stateCrimeAvg = getStateCrimeAvg(state);
+
   const related = getRelated(state, slug, 6);
   const similarSafety = getSimilarItems('safety_score', score, slug, 5);
   const quizCities = getTopItems(40)
@@ -134,6 +139,17 @@ export default async function CityPage({ params }: Props) {
           <div className="text-xs text-slate-500 mt-1">Total Crime / 100K</div>
         </div>
       </div>
+
+      <InsightCards
+        cityName={name}
+        state={state}
+        safetyScore={score}
+        violentRate={violent}
+        propertyRate={property}
+        stateRank={stateRank}
+        nationalPercentile={nationalPercentile}
+        stateCrimeAvg={stateCrimeAvg}
+      />
 
       <AdSlot id="top" />
 

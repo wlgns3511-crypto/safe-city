@@ -110,3 +110,24 @@ export function getNextPrev(slug: string) {
   ).get(slug) as { slug: string; name: string } | undefined;
   return { prev: prev || null, next: next || null };
 }
+
+// ── Insight Cards ──────────────────────────────────────────
+
+export function getCityRankInState(state: string, score: number): { rank: number; total: number } {
+  if (!CAT_COL) return { rank: 1, total: 1 };
+  const total = (getDb().prepare(`SELECT COUNT(*) as c FROM ${TABLE} WHERE ${CAT_COL} = ?`).get(state) as { c: number }).c;
+  const rank = (getDb().prepare(`SELECT COUNT(*) as c FROM ${TABLE} WHERE ${CAT_COL} = ? AND safety_score > ?`).get(state, score) as { c: number }).c + 1;
+  return { rank, total };
+}
+
+export function getCityNationalPercentile(score: number): number {
+  const total = (getDb().prepare(`SELECT COUNT(*) as c FROM ${TABLE}`).get() as { c: number }).c;
+  const below = (getDb().prepare(`SELECT COUNT(*) as c FROM ${TABLE} WHERE safety_score < ?`).get(score) as { c: number }).c;
+  return total > 0 ? Math.round((below / total) * 100) : 50;
+}
+
+export function getStateCrimeAvg(state: string): { avg_violent: number; avg_property: number } {
+  if (!CAT_COL) return { avg_violent: 0, avg_property: 0 };
+  const row = getDb().prepare(`SELECT AVG(violent_crime_rate) as avg_violent, AVG(property_crime_rate) as avg_property FROM ${TABLE} WHERE ${CAT_COL} = ?`).get(state) as { avg_violent: number; avg_property: number };
+  return { avg_violent: Math.round(row.avg_violent), avg_property: Math.round(row.avg_property) };
+}
