@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/site.config';
-import { getBySlug, getRelated, getAllSlugs, getSimilarItems, getTopItems, getCityRankInState, getCityNationalPercentile, getStateCrimeAvg } from '@/lib/db';
+import { getBySlug, getRelated, getAllSlugs, getSimilarItems, getTopItems, getCityRankInState, getCityNationalPercentile, getStateCrimeAvg, getStateCrimeBreakdownAvg } from '@/lib/db';
 import { breadcrumbSchema, faqSchema } from '@/lib/schema';
 import { AdSlot } from '@/components/AdSlot';
 import { AuthorBox } from '@/components/AuthorBox';
@@ -12,6 +12,7 @@ import { CrossSiteLinks } from '@/components/CrossSiteLinks';
 import { FAQ } from '@/components/FAQ';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { SafetyQuiz } from '@/components/SafetyQuiz';
+import { CrimeBreakdownBar } from '@/components/CrimeBreakdownBar';
 
 const c = siteConfig;
 
@@ -78,6 +79,7 @@ export default async function CityPage({ params }: Props) {
   const stateRank = getCityRankInState(state, score);
   const nationalPercentile = getCityNationalPercentile(score);
   const stateCrimeAvg = getStateCrimeAvg(state);
+  const stateBreakdownAvg = getStateCrimeBreakdownAvg(state);
 
   const related = getRelated(state, slug, 6);
   const similarSafety = getSimilarItems('safety_score', score, slug, 5);
@@ -149,6 +151,19 @@ export default async function CityPage({ params }: Props) {
         stateRank={stateRank}
         nationalPercentile={nationalPercentile}
         stateCrimeAvg={stateCrimeAvg}
+      />
+
+      <CrimeBreakdownBar
+        cityName={name}
+        state={state}
+        murderRate={city.murder_rate as number}
+        rapeRate={city.rape_rate as number}
+        robberyRate={city.robbery_rate as number}
+        assaultRate={city.assault_rate as number}
+        burglaryRate={city.burglary_rate as number}
+        larcenyRate={city.larceny_rate as number}
+        vehicleTheftRate={city.vehicle_theft_rate as number}
+        stateAvg={stateBreakdownAvg}
       />
 
       <AdSlot id="top" />

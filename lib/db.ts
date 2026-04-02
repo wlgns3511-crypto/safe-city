@@ -131,3 +131,19 @@ export function getStateCrimeAvg(state: string): { avg_violent: number; avg_prop
   const row = getDb().prepare(`SELECT AVG(violent_crime_rate) as avg_violent, AVG(property_crime_rate) as avg_property FROM ${TABLE} WHERE ${CAT_COL} = ?`).get(state) as { avg_violent: number; avg_property: number };
   return { avg_violent: Math.round(row.avg_violent), avg_property: Math.round(row.avg_property) };
 }
+
+export function getStateCrimeBreakdownAvg(state: string): { murder: number; rape: number; robbery: number; assault: number; burglary: number; larceny: number; vehicle_theft: number } {
+  if (!CAT_COL) return { murder: 0, rape: 0, robbery: 0, assault: 0, burglary: 0, larceny: 0, vehicle_theft: 0 };
+  const row = getDb().prepare(
+    `SELECT AVG(murder_rate) as murder, AVG(rape_rate) as rape, AVG(robbery_rate) as robbery, AVG(assault_rate) as assault, AVG(burglary_rate) as burglary, AVG(larceny_rate) as larceny, AVG(vehicle_theft_rate) as vehicle_theft FROM ${TABLE} WHERE ${CAT_COL} = ?`
+  ).get(state) as { murder: number; rape: number; robbery: number; assault: number; burglary: number; larceny: number; vehicle_theft: number };
+  return {
+    murder: Math.round(row.murder * 10) / 10,
+    rape: Math.round(row.rape * 10) / 10,
+    robbery: Math.round(row.robbery * 10) / 10,
+    assault: Math.round(row.assault * 10) / 10,
+    burglary: Math.round(row.burglary * 10) / 10,
+    larceny: Math.round(row.larceny * 10) / 10,
+    vehicle_theft: Math.round(row.vehicle_theft * 10) / 10,
+  };
+}
