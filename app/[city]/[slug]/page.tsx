@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/site.config';
-import { getBySlug, getRelated, getAllSlugs, getSimilarItems } from '@/lib/db';
+import { getBySlug, getRelated, getAllSlugs, getSimilarItems, getTopItems } from '@/lib/db';
 import { breadcrumbSchema, faqSchema } from '@/lib/schema';
 import { AdSlot } from '@/components/AdSlot';
 import { AuthorBox } from '@/components/AuthorBox';
@@ -10,6 +10,7 @@ import { InsightBox } from '@/components/InsightBox';
 import { CrossSiteLinks } from '@/components/CrossSiteLinks';
 import { FAQ } from '@/components/FAQ';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { SafetyQuiz } from '@/components/SafetyQuiz';
 
 const c = siteConfig;
 
@@ -75,6 +76,10 @@ export default async function CityPage({ params }: Props) {
 
   const related = getRelated(state, slug, 6);
   const similarSafety = getSimilarItems('safety_score', score, slug, 5);
+  const quizCities = getTopItems(40)
+    .filter(c => c.slug !== slug && typeof c.safety_score === 'number')
+    .slice(0, 30)
+    .map(c => ({ name: String(c.name), state: String(c.state), slug: String(c.slug), safetyScore: c.safety_score as number, violentRate: c.violent_crime_rate as number }));
 
   const crumbs = [
     { name: 'Home', url: '/' },
@@ -131,6 +136,8 @@ export default async function CityPage({ params }: Props) {
       </div>
 
       <AdSlot id="top" />
+
+      {quizCities.length >= 10 && <SafetyQuiz cities={quizCities} />}
 
       {/* Violent Crime Breakdown */}
       <section className="mt-8 border rounded-lg overflow-hidden">
